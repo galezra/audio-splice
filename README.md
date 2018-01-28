@@ -6,7 +6,7 @@ SoundSlice is a library meant to read in an audio file in any of several support
 This software is released under the Apache License, Version 2.0.
 
 
-Supported Audio Formats
+Supported Audio Formats (as of now)
 --------
 
 * MIDI
