@@ -216,7 +216,7 @@ public final class StdAudio {
 
 
   /**
-  * Save the double array as a sound file (using .wav or .au format).
+  * Save the double array as a sound file named "filenamex"(using .wav or .au format).
   */
   public static void save(String filename, double[] input) {
 
@@ -275,21 +275,12 @@ public final class StdAudio {
 
     // 440 Hz for 1 sec
     double freq = 440.0;
-    // for (int i = 0; i <= StdAudio.SAMPLE_RATE; i++) {
-    //     StdAudio.play(0.5 * Math.sin(2*Math.PI * freq * i / StdAudio.SAMPLE_RATE));
-    // }
+    for (int i = 0; i <= StdAudio.SAMPLE_RATE; i++) {
+        StdAudio.play(0.5 * Math.sin(2*Math.PI * freq * i / StdAudio.SAMPLE_RATE));
+    }
 
     // scale increments
-    // int[] steps = {0, 2, 4, 5, 7, 9, 11, 12 };
-
-    // below commented out code makes a horrible sound when scanner input value is over 900
-
-    // for (int i = 0; i < steps.length; i++) {
-    //     double hz = 440.0 * Math.pow(2, steps[i] / 12.0);
-    //     StdAudio.play(note(hz, 1.0, 0.5));
-    // }
-    StdAudio.play("1-welcome.wav");
-
+    int[] steps = {0, 2, 4, 5, 7, 9, 11, 12 };
 
     // need to call this in non-interactive stuff so the program doesn't terminate
     // until all the sound leaves the speaker.
