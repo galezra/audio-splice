@@ -51,7 +51,6 @@ public final class StdAudio {
   // do not instantiate
   private StdAudio() { }
 
-
   // static initializer
   static { init(); }
 
@@ -77,7 +76,6 @@ public final class StdAudio {
     // no sound gets made before this call
     line.start();
   }
-
 
   /**
   * Close standard audio.
@@ -132,8 +130,6 @@ public final class StdAudio {
     }
     return d;
   }
-
-
 
   private static Clip openClip(String filename)
   throws UnsupportedAudioFileException, LineUnavailableException, IOException {
@@ -213,8 +209,6 @@ public final class StdAudio {
     return data;
   }
 
-
-
   /**
   * Save the double array as a sound file named "filenamex"(using .wav or .au format).
   */
@@ -249,9 +243,6 @@ public final class StdAudio {
       System.exit(1);
     }
   }
-
-
-
 
   /***********************************************************************
   * sample test client
