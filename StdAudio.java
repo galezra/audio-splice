@@ -262,8 +262,7 @@ public final class StdAudio {
   * Test client - play an A major scale to standard audio.
   */
   public static void main(String[] args) {
-    Scanner kboard = new Scanner(System.in);
-
+    // Scanner kboard = new Scanner(System.in);
     // 440 Hz for 1 sec
     double freq = 440.0;
     for (int i = 0; i <= StdAudio.SAMPLE_RATE; i++) {
