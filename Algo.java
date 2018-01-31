@@ -9,7 +9,7 @@ public class Algo {
 
     StdAudio.play(StdAudio.read("1-welcome.wav"));
 
-    from a wave File
+    // from a wave File
 
 
   }
