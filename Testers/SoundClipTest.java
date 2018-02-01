@@ -28,7 +28,7 @@ public class SoundClipTest extends JFrame {
       AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
       // Get a sound clip resource.
       Clip clip = AudioSystem.getClip();
-      // Open audio clip and load samples from the audio input stream.
+      // Open clip and load samples from the audio input stream.
       clip.open(audioIn);
       clip.start();
     } catch (UnsupportedAudioFileException e) {
