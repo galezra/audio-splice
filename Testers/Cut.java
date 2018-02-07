@@ -39,11 +39,19 @@ public class Cut {;
     String tempFile = "1-welcome.wav";
     Cut c = new Cut(tempFile);
     double[] tempSplits = c.getSplits();
+
+    int SAMPLE_RATE = 44100;
+    double freq = 440.0;
+    for (int i = 0; i <= SAMPLE_RATE; i++) {
+        StdAudio.play(0.5 * Math.sin(2 * Math.PI * tempSplits[i] / SAMPLE_RATE));
+    }
+
     // System.out.print("[");
     // for(int i = 0; i < tempSplits.length; i++) {
     //   System.out.print(tempSplits[i] + ", ");
     // }
     // System.out.print("]");
     System.out.println(tempSplits.length);
+    StdAudio.close();
   }
 }
