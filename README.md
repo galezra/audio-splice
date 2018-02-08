@@ -5,15 +5,23 @@ SoundSlice is a library meant to read in an audio file in any of several support
 
 This library will also include a visualization software which will draw out the array of bytes to simplify analysis.
 
-This software is released under the Apache License, Version 2.0.
-
-
 Supported Audio Formats (as of now)
 --------
 
-* MIDI
-* .wav
-* .au
-* .mp3
+  * MIDI
+  * .wav
+  * .au
+  * .mp3
 
 [//]: # (sentence diorization - ward)
+
+
+License
+--------
+This software is released under the Apache License, Version 2.0. Refer to the [license file](https://github.com/naluconcepcion/audio-splice/blob/master/LICENSE.md) for details.
+
+Contributing to the Repository
+--------
+Please follow the [code of conduct]() to contribute.
+
+
