@@ -180,7 +180,7 @@ public final class StdAudio {
 
 
   // return data as a byte array
-  private static byte[] readByte(String filename) {
+  public static byte[] readByte(String filename) {
     byte[] data = null;
     AudioInputStream ais = null;
     try {
