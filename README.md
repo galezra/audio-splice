@@ -5,6 +5,8 @@ SoundSlice is a library meant to read in an audio file in any of several support
 
 This library will also include a visualization software which will draw out the array of bytes to simplify analysis.
 
+Supported Formats
+
 -------
 
 The only supported audioformat as of right now is the .wav format.
