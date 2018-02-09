@@ -1,14 +1,16 @@
 SoundSlice
 ===================================
 
-SoundSlice is a library meant to read in an audio file in any of several supported formats which are listed below, and identify different speakers. This library has the capacity to flag speaker switches and split the audio file into two different speakers (one containing all the parts of each speaker).
+SoundSlice is a library meant to read in an audio file in any of several supported formats which are listed below and identify switches in speakers.
+
+ This library aims to flag speaker switches and split the audio file into two different speakers (one containing all the parts of each speaker).
 
 This library will also include a visualization software which will draw out the array of bytes to simplify analysis.
 
 Supported Formats
 -------
 
-The only supported audioformat as of right now is the .wav format.
+The only supported audio format as of right now is the .wav format.
 
 License
 --------
