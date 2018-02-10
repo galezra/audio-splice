@@ -1,21 +1,21 @@
 import java.util.ArrayList;
 public class Cut {
-// Fields
+  // Fields
   public static final double SAMPLE_RATE = 22050.0;
   private double[] preSplit; // array of doubles generated prior to being stripped
   private double[] splits; // array of doubles which are potential splittable times
-  private double[] times; // !!!!! TIMES FOR POSSIBLE SPLIT!! HOW TO DETERMINE??
+
   private double totTime; // total time of reading in file
   private ArrayList<Integer> numPrev = new ArrayList<Integer>(); // holds # doubles between splits, useful for conversion to time data
-// Instantiation
+  private ArrayList<Double> times = new ArrayList<Double>();
+  // Instantiation
   public Cut(String fn) {
     preSplit = StdAudio.read(fn);
-    splits = possiSplits(fn);
+    splits = possiSplits();
     totTime = (StdAudio.readByte(fn)).length/SAMPLE_RATE;
-    // times = convertTime(splits);
   }
-// Heavy Algorithms Section
-  private double[] possiSplits(String filename) {
+  // Heavy Algorithms Section
+  private double[] possiSplits() {
     ArrayList<Double> lessZeroes = new ArrayList();
     ArrayList<Double> greaterZeroes = new ArrayList();
     ArrayList<Double> zeroes = new ArrayList();
@@ -53,9 +53,13 @@ public class Cut {
   //     if(arr[i] )
   //   }
   // }
-// Getters
-  private double[] convertTime(double[] arr) { // I really need to figure out how to convert from a particular byte to a time
-    
+  // Getters
+  private void convertTime() { // I really need to figure out how to convert from a particular byte to a time
+    double d = 0.0;
+    for(int i = 0; i < numPrev.size(); i++) {
+      d = numPrev.get(i) / SAMPLE_RATE;
+      times.add(d);
+    }
   }
   public double[] getSplits() {
     return splits;
@@ -66,7 +70,6 @@ public class Cut {
   public static void main(String[] args) {
     String tempFile = "1-welcome.wav";
     Cut c = new Cut(tempFile);
-    double[] tempSplits = c.getSplits();
-    System.out.println(c.numPrev);
+    System.out.println(c.times);
   }
 }
