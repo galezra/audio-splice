@@ -16,9 +16,9 @@ public class Cut {
   }
   // Heavy Algorithms Section
   private double[] possiSplits() {
-    ArrayList<Double> lessZeroes = new ArrayList();
-    ArrayList<Double> greaterZeroes = new ArrayList();
-    ArrayList<Double> zeroes = new ArrayList();
+    ArrayList<Double> lessZeroes = new ArrayList<Double>();
+    ArrayList<Double> greaterZeroes = new ArrayList<Double>();
+    ArrayList<Double> zeroes = new ArrayList<Double>();
 
     // section for setting numPrev
     int prevs = 0;
