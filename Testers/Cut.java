@@ -2,74 +2,77 @@ import java.util.ArrayList;
 public class Cut {
   // Fields
   public static final double SAMPLE_RATE = 22050.0;
-  private double[] preSplit; // array of doubles generated prior to being stripped
-  private double[] splits; // array of doubles which are potential splittable times
+  private double[] originalSamples; // array of doubles generated prior to being stripped
+  private double totalTime; // total time of reading in file
 
-  private double totTime; // total time of reading in file
-  private ArrayList<Integer> numPrev = new ArrayList<Integer>(); // holds # doubles between splits, useful for conversion to time data
+  private ArrayList<Double> splits; // array of doubles which are potential splittable times
+  // The total number of bytes between each wave of audio data.
+  private ArrayList<Integer> bytesPerGap = new ArrayList<Integer>(); // holds # doubles between splits, useful for conversion to time data
   private ArrayList<Double> times = new ArrayList<Double>();
   // Instantiation
-  public Cut(String fn) {
-    preSplit = StdAudio.read(fn);
-    splits = possiSplits();
-    totTime = (StdAudio.readByte(fn)).length/SAMPLE_RATE;
+  public Cut(String filename) {
+    this.originalSamples = StdAudio.read(filename);
+    this.splits = possibleSplits();
+    this.totalTime = (StdAudio.readByte(filename)).length/SAMPLE_RATE;
+    this.convertTime();
   }
+
   // Heavy Algorithms Section
-  private double[] possiSplits() {
-    ArrayList<Double> lessZeroes = new ArrayList<Double>();
-    ArrayList<Double> greaterZeroes = new ArrayList<Double>();
-    ArrayList<Double> zeroes = new ArrayList<Double>();
+  private ArrayList<Double> possibleSplits() {
+    ArrayList<Double> negativeSamples = new ArrayList<Double>();
+    ArrayList<Double> positiveSamples = new ArrayList<Double>();
+    ArrayList<Double> nilSamples = new ArrayList<Double>();
 
     // section for setting numPrev
-    int prevs = 0;
-    for(int i = 0; i < preSplit.length; i++) {
-      double val = preSplit[i];
-      prevs++;
-      if(val < 0) {
-        lessZeroes.add(val);
-        // numPrev.add(prevs);
-        // prevs = 0;
+    //  The number of  doubles that it took to hit a gap. (maybe use interval?)
+    int numBytesPerGap = 0;
+    for (int i = 0; i < originalSamples.length; i++) {
+      double val = originalSamples[i];
+
+      numBytesPerGap++;
+
+      if (val < 0) {
+        negativeSamples.add(val);
       }
-      else if(val > 0) {
-        greaterZeroes.add(val);
-        // numPrev.add(prevs);
-        // prevs = 0;
+      else if (val > 0) {
+        positiveSamples.add(val);
       }
       else {
-        zeroes.add(val);
-        numPrev.add(prevs);
-        prevs = 0;
+        nilSamples.add(val);
+        bytesPerGap.add(numBytesPerGap);
+        numBytesPerGap = 0;
       }
     }
-    double[] arrZeroes;
-    arrZeroes = new double[greaterZeroes.size()];
-    for(int i = 0; i < greaterZeroes.size(); i++) {
-      arrZeroes[i] = greaterZeroes.get(i);
-    }
-    return arrZeroes;
+
+    return nilSamples;
   }
-  // private double[] likelySplit(double[] arr) {
-  //   for(int i = 0; i < arr.length; i++) {
-  //     if(arr[i] )
-  //   }
-  // }
-  // Getters
+
   private void convertTime() { // I really need to figure out how to convert from a particular byte to a time
     double d = 0.0;
-    for(int i = 0; i < numPrev.size(); i++) {
-      d = numPrev.get(i) / SAMPLE_RATE;
+
+    for (Integer numBytes: this.bytesPerGap) {
+      d = numBytes / SAMPLE_RATE;
       times.add(d);
     }
   }
-  public double[] getSplits() {
+
+  // Getters
+
+  public ArrayList<Double> getSplits() {
     return splits;
   }
-  public double getFileTime() {
-    return totTime;
+
+  public ArrayList<Double> getTimes() {
+    return times;
   }
+
+  public double getTotalTime() {
+    return totalTime;
+  }
+
   public static void main(String[] args) {
     String tempFile = "1-welcome.wav";
     Cut c = new Cut(tempFile);
-    System.out.println(c.times);
+    System.out.println(c.getTimes());
   }
 }
