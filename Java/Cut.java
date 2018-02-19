@@ -6,6 +6,10 @@ public class Cut {
    */
   public static final double SAMPLE_RATE = 44100;
   /**
+   * Number of channels in the file
+   */
+  public final int NUMCHANNELS;
+  /**
    * An array of doubles generated prior to walking through the audio file.
    */
   private double[] originalSamples;
@@ -31,10 +35,11 @@ public class Cut {
    * Instatniates a new Cut class.
    * @param String filename the path to the audio file (.wave).
    */
-  public Cut(String filename) {
+  public Cut(String filename, int numChans) {
+    this.NUMCHANNELS = numChans;
     this.originalSamples = StdAudio.read(filename);
     this.splits = possibleSplits();
-    this.totalTime = (StdAudio.read(filename)).length/SAMPLE_RATE;
+    this.totalTime = (StdAudio.read(filename)).length/(SAMPLE_RATE*NUMCHANNELS);
     this.convertTime();
   }
 
@@ -114,12 +119,14 @@ public class Cut {
    */
   public static void main(String[] args) {
     String tempFile = "ComfyConvo.wav";
-    Cut c = new Cut(tempFile);
+    Cut c = new Cut(tempFile, 2);
     // System.out.println(c.getTimes());
     double f = 0;
     for(int i = 0; i < c.getTimes().size(); i++) {
       f += c.getTimes().get(i);
     }
+    f /= c.NUMCHANNELS;
+    System.out.println(f);
     System.out.println(c.getTotalTime());
   }
 }
