@@ -2,9 +2,9 @@ import java.util.ArrayList;
 
 public class Cut {
   /**
-   * Standard sampling rate for audio.
+   * Standard sampling rate for audio file.
    */
-  public static final double SAMPLE_RATE = 22050.0;
+  public static final double SAMPLE_RATE = 44100;
   /**
    * An array of doubles generated prior to walking through the audio file.
    */
@@ -29,12 +29,12 @@ public class Cut {
 
   /**
    * Instatniates a new Cut class.
-   * @param String filename The path to the audio file (.wave).
+   * @param String filename the path to the audio file (.wave).
    */
   public Cut(String filename) {
     this.originalSamples = StdAudio.read(filename);
     this.splits = possibleSplits();
-    this.totalTime = (StdAudio.readByte(filename)).length/SAMPLE_RATE;
+    this.totalTime = (StdAudio.read(filename)).length/SAMPLE_RATE;
     this.convertTime();
   }
 
@@ -66,7 +66,7 @@ public class Cut {
       }
       else {
         nilSamples.add(val);
-        doublesPerGap.add(numDoublesPerGap);
+        bytesPerGap.add(numDoublesPerGap);
         numDoublesPerGap = 0;
       }
     }
@@ -81,7 +81,7 @@ public class Cut {
   private void convertTime() {
     double d = 0.0;
 
-    for (Integer numBytes: this.doublesPerGap) {
+    for (Integer numBytes: this.bytesPerGap) {
       d = numBytes / SAMPLE_RATE;
       times.add(d);
     }
@@ -113,9 +113,9 @@ public class Cut {
    * For testing...
    */
   public static void main(String[] args) {
-    String tempFile = "1-welcome.wav";
+    String tempFile = "ComfyConvo.wav";
     Cut c = new Cut(tempFile);
-    System.out.println(c.getTimes());
+    // System.out.println(c.getTimes());
     double f = 0;
     for(int i = 0; i < c.getTimes().size(); i++) {
       f += c.getTimes().get(i);
