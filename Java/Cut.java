@@ -7,7 +7,7 @@ public class Cut {
 
   private ArrayList<Double> splits; // array of doubles which are potential splittable times
   // The total number of bytes between each wave of audio data.
-  private ArrayList<Integer> bytesPerGap = new ArrayList<Integer>(); // holds # doubles between splits, useful for conversion to time data
+  private ArrayList<Integer> doublesPerGap = new ArrayList<Integer>(); // holds # doubles between splits, useful for conversion to time data
   private ArrayList<Double> times = new ArrayList<Double>();
   // Instantiation
   public Cut(String filename) {
@@ -16,20 +16,25 @@ public class Cut {
     this.totalTime = (StdAudio.readByte(filename)).length/SAMPLE_RATE;
     this.convertTime();
   }
-
-  // Heavy Algorithms Section
+  /*
+  Generating double values for which there could be a gap in conversation. For now,
+  this method returns an array of doubles at which the amplitude of the
+  sound wave is zero. (In other words, points where there is no sound being produced.)
+  */
   private ArrayList<Double> possibleSplits() {
     ArrayList<Double> negativeSamples = new ArrayList<Double>();
     ArrayList<Double> positiveSamples = new ArrayList<Double>();
     ArrayList<Double> nilSamples = new ArrayList<Double>();
 
-    // section for setting numPrev
-    //  The number of  doubles that it took to hit a gap. (maybe use interval?)
-    int numBytesPerGap = 0;
+    /*
+    numDoublesPerGap is set. The below is the algorithm for determining how many
+    "samples" there are between zeroes.
+    */
+    int numDoublesPerGap = 0;
     for (int i = 0; i < originalSamples.length; i++) {
       double val = originalSamples[i];
 
-      numBytesPerGap++;
+      numDoublesPerGap++;
 
       if (val < 0) {
         negativeSamples.add(val);
@@ -39,25 +44,26 @@ public class Cut {
       }
       else {
         nilSamples.add(val);
-        bytesPerGap.add(numBytesPerGap);
-        numBytesPerGap = 0;
+        doublesPerGap.add(numDoublesPerGap);
+        numDoublesPerGap = 0;
       }
     }
 
     return nilSamples;
   }
-
-  private void convertTime() { // I really need to figure out how to convert from a particular byte to a time
+  /*
+  Converts the number of doubles between zeroes (doublesPerGap) into times
+  so as to create human-readable "flags".
+  */
+  private void convertTime() {
     double d = 0.0;
 
-    for (Integer numBytes: this.bytesPerGap) {
+    for (Integer numBytes: this.doublesPerGap) {
       d = numBytes / SAMPLE_RATE;
       times.add(d);
     }
   }
-
-  // Getters
-
+  // Getter methods; returns values of fields.
   public ArrayList<Double> getSplits() {
     return splits;
   }
@@ -74,5 +80,10 @@ public class Cut {
     String tempFile = "1-welcome.wav";
     Cut c = new Cut(tempFile);
     System.out.println(c.getTimes());
+    double f = 0;
+    for(int i = 0; i < c.getTimes().size(); i++) {
+      f += c.getTimes().get(i);
+    }
+    System.out.println(c.getTotalTime());
   }
 }

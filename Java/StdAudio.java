@@ -5,7 +5,7 @@ import java.util.Scanner;
 *  Execution:    java StdAudio
 *
 *  Simple library for reading, writing, and manipulating .wav files.
-
+*  Author: Maria Litvin
 *
 *  Limitations
 *  -----------
@@ -268,7 +268,6 @@ public final class StdAudio {
     for (int i = 0; i <= StdAudio.SAMPLE_RATE; i++) {
         StdAudio.play(0.5 * Math.sin(2*Math.PI * freq * i / StdAudio.SAMPLE_RATE));
     }
-
     // scale increments
     int[] steps = {0, 2, 4, 5, 7, 9, 11, 12 };
 
