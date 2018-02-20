@@ -1,3 +1,10 @@
+/* Note: All inputted audio files
+*        must take the following format
+*        sample rate of 44100
+*        2 channels
+*        audio sample size 16 bit
+*/
+
 import java.util.ArrayList;
 
 public class Cut {
@@ -5,10 +12,6 @@ public class Cut {
    * Standard sampling rate for audio file.
    */
   public static final double SAMPLE_RATE = 44100;
-  /**
-   * Number of channels in the file
-   */
-  public final int NUMCHANNELS;
   /**
    * An array of doubles generated prior to walking through the audio file.
    */
@@ -35,11 +38,10 @@ public class Cut {
    * Instatniates a new Cut class.
    * @param String filename the path to the audio file (.wave).
    */
-  public Cut(String filename, int numChans) {
-    this.NUMCHANNELS = numChans;
+  public Cut(String filename) {
     this.originalSamples = StdAudio.read(filename);
     this.splits = possibleSplits();
-    this.totalTime = (StdAudio.read(filename)).length/(SAMPLE_RATE*NUMCHANNELS);
+    this.totalTime = (StdAudio.read(filename)).length/(SAMPLE_RATE*2);
     this.convertTime();
   }
 
@@ -117,14 +119,14 @@ public class Cut {
    * For testing...
    */
   public static void main(String[] args) {
-    String tempFile = "ComfyConvo.wav";
-    Cut c = new Cut(tempFile, 2);
+    String tempFile = "wavfiles/ComfyConvo.wav";
+    Cut c = new Cut(tempFile);
     // System.out.println(c.getTimes());
     double f = 0;
     for(int i = 0; i < c.getTimes().size(); i++) {
       f += c.getTimes().get(i);
     }
-    f /= c.NUMCHANNELS;
+    f /= 2;
     System.out.println(f);
     System.out.println(c.getTotalTime());
   }
