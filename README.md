@@ -1,12 +1,12 @@
 SoundSlice
 ===================================
 
-SoundSlice is a library which reads audio files of conversations between people and identifies switches in speakers. This library aims to flag speaker switches and splits the audio file into two different speakers (one containing all the parts of each speaker). The library will also include a visualization software which will show the sound wave of the file, as well as the flags when the primary speaker switches.
+SoundSlice is a library which reads audio files of conversations between people and identifies switches in speakers. This library aims to flag speaker switches and splits the audio file, creating new folders containing the .wav files for the parts for each of the two different speakers (one containing all the parts of each speaker with brief pauses in between each new snippet of conversation).
 
 How it Works
 -------
 
-The user is first prompted for an audio file, and as an output, an array will be generated containing the times in which the speakers in the audio file switch. In order to do so, the library finds the points of time in which there is little amplitude in the file (signifying the speaker not talking). The array will then be used to display the points of the sounds waves where these changes occur.
+The user is first prompted to input the name of which audio file to process as a String, and as an output, an ArrayList called times is generated containing the times in which the speakers in the audio file switch. In order to generate this array, the software finds the points of time in which there is little amplitude in the file (signifying that the speaker is not talking) and stores them as new values in times. Splitter.java then parses times, cutting apart the first audio file into many different .wav files at each time in times.  
 
 Supported Formats
 -------
