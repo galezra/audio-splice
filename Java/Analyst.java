@@ -19,7 +19,7 @@ public class Analyst {
 
   public static void studyVoice(String s, int n) {
     Cut c = new Cut(s, n);
-
+    
   }
 
   public static void main(String[] args) {

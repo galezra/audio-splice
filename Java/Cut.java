@@ -80,7 +80,9 @@ public class Cut {
 
     return nilSamples;
   }
-
+  public ArrayList<Double> likelySplits() {
+    
+  }
   /**
    * Converts the number of doubles between zeroes (`doublesPerGap`) into
    * times so as to create human-readable "flags."
