@@ -80,6 +80,9 @@ public class Cut {
 
     return nilSamples;
   }
+  /**
+  * An optimized version of possibleSplits().
+  */
   public ArrayList<Double> likelySplits() {
     
   }
