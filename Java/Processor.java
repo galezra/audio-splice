@@ -1,13 +1,13 @@
-/* Note: All inputted audio files
-*        must take the following format
+/* Note: All inputted wav files
+*        must take the following format:
 *        sample rate of 44100
 *        2 channels
-*        audio sample size 16 bit
+*        audio sample size 16 bit.
 */
 
 import java.util.ArrayList;
 
-public class Cut {
+public class Processor {
   /**
    * Standard sampling rate for audio file.
    */
@@ -33,20 +33,18 @@ public class Cut {
    * Times of gaps in the audio sequence.
    */
   private ArrayList<Double> times = new ArrayList<Double>();
-
   /**
-   * Instatniates a new Cut class.
+   * Instatniates a new Processor class.
    * @param String filename the path to the audio file (.wave).
    */
-  public Cut(String filename) {
+  public Processor(String filename) {
     this.originalSamples = StdAudio.read(filename);
     this.splits = possibleSplits();
     this.totalTime = (StdAudio.read(filename)).length/(SAMPLE_RATE*2);
     this.convertTime();
   }
-
   /**
-   * Generates double values for which there could be a gap in conversation.
+   * Generates double values for which there could be a gap in Processor.
    * In other words, points where there is no sound being produced.
    * @return An array of doubles at which the amplitude of the sound wave is zero.
    */
@@ -54,7 +52,6 @@ public class Cut {
     ArrayList<Double> negativeSamples = new ArrayList<Double>();
     ArrayList<Double> positiveSamples = new ArrayList<Double>();
     ArrayList<Double> nilSamples = new ArrayList<Double>();
-
     /*
     numDoublesPerGap is set. The below is the algorithm for determining how many
     "samples" there are between zeroes.
@@ -83,9 +80,9 @@ public class Cut {
   /**
   * An optimized version of possibleSplits().
   */
-  public ArrayList<Double> likelySplits() {
-    
-  }
+  // public ArrayList<Double> likelySplits() {
+  //
+  // }
   /**
    * Converts the number of doubles between zeroes (`doublesPerGap`) into
    * times so as to create human-readable "flags."
@@ -125,7 +122,7 @@ public class Cut {
    */
   public static void main(String[] args) {
     String tempFile = "wavfiles/ComfyConvo.wav";
-    Cut c = new Cut(tempFile);
+    Processor c = new Processor(tempFile);
     // System.out.println(c.getTimes());
     double f = 0;
     for(int i = 0; i < c.getTimes().size(); i++) {

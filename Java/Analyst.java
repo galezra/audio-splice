@@ -1,9 +1,10 @@
 import java.io.File;
 import java.util.ArrayList;
-public class Analyst {
-  public ArrayList<String> voices = new ArrayList<String>();
-  public ArrayList<Double> wavFile = new ArrayList<Double>();
 
+public class Analyst {
+  private ArrayList<String> voices = new ArrayList<String>();
+  private ArrayList<Double> wavFile = new ArrayList<Double>();
+  private ArrayList<Processor> convos = new ArrayList<Processor>();
 
   public Analyst(String path) {
     File folder = new File(path);
@@ -14,16 +15,28 @@ public class Analyst {
         voices.add(f);
       }
     }
+    this.makeProcessors();
     System.out.println(voices);
   }
 
-  public static void studyVoice(String s, int n) {
-    Cut c = new Cut(s, n);
-    
+  public void makeProcessors() {
+    for(int i = 0; i < voices.size(); i++) {
+      convos.add(new Processor(voices.get(i)));
+    }
   }
 
   public static void main(String[] args) {
-    String path = "/Users/naluconcepcion/Desktop/audio-splice/Java/wavfiles";
-    Analyst a = new Analyst(path);
+
+    // String path = "/Users/naluconcepcion/Desktop/audio-splice/Java/wavfiles";
+    // Analyst a = new Analyst(path);
+
+    try {
+      Analyst b = new Analyst(args[0]);
+    } catch(ArrayIndexOutOfBoundsException e) {
+      System.out.println("correct usage: java Analyst <path to .wav file>");
+    }
+    catch (NullPointerException e) {
+      System.out.println("path does not exist or is not a valid path");
+    }
   }
 }
