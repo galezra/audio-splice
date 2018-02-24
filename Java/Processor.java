@@ -92,15 +92,15 @@ public class Processor {
   * The original file is split into many smaller .wav files using the
   * splitting algorithm above.
   */
-  public void makeWaves(String newFileName) {
+  public void makeWaves(String origFileName) {
     for(int j = 0; j < originalSamples.length; j++) { // loop through the entire file, byte per byte
       for(int i = 0; i < splits.size(); i++) { // in total, there should be splits.size() new .wav files created
         double[] snippet = new double[bytesPerGap.get(i)];
         for(int f = 0; f < bytesPerGap.get(i); f++) { // program hangs here
-          snippet[f] = originalSamples[j];
+          snippet[j] = originalSamples[j];
         }
-        System.out.println("it's working");
-        StdAudio.save(newFileName, snippet);
+        String newFileName = origFileName + " " + i;
+        StdAudio.save(newFileName + ".wav", snippet);
       }
     }
   }
@@ -152,6 +152,7 @@ public class Processor {
     // f /= 2;
     // System.out.println(f);
     // System.out.println(c.getTotalTime());
+
     c.makeWaves(tempFile);
   }
 }
