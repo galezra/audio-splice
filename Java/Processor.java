@@ -17,7 +17,7 @@ public class Processor {
   */
   public static final double SAMPLE_RATE = 44100;
   /**
-  * An array of doubles generated prior to walking through the audio file.
+  * An array of double values representing the amplitude of the audio file at various points.
   */
   private double[] originalSamples;
   /**
@@ -81,11 +81,28 @@ public class Processor {
 
     return nilSamples;
   }
+
   /**
   * An optimized version of possibleSplits().
   */
   // public ArrayList<Double> likelySplits() {
+  //   ArrayList<Double> negativeSamples = new ArrayList<Double>();
+  //   ArrayList<Double> positiveSamples = new ArrayList<Double>();
+  //   ArrayList<Double> nilSamples = new ArrayList<Double>();
+  //   /*
+  //   numDoublesPerGap is set. The below is the algorithm for determining how many
+  //   "samples" there are between zeroes.
+  //   */
+  //   int numDoublesPerGap = 0;
+  //   for (int i = 0; i < originalSamples.length; i++) {
+  //     double val = originalSamples[i];
   //
+  //     numDoublesPerGap++;
+  //
+  //     if(val > -)
+  //   }
+  //
+  //   return nilSamples;
   // }
 
   /**
@@ -142,7 +159,7 @@ public class Processor {
   * For testing...
   */
   public static void main(String[] args) {
-    String tempFile = "wavfiles/1-welcome.wav";
+    String tempFile = "wavfiles/JamesNero.wav";
     Processor c = new Processor(tempFile);
     // System.out.println(c.getTimes());
     // double f = 0;
@@ -153,6 +170,15 @@ public class Processor {
     // System.out.println(f);
     // System.out.println(c.getTotalTime());
 
-    c.makeWaves(tempFile);
+    // c.makeWaves(tempFile);
+    // System.out.println(c.bytesPerGap);
+    int sum = 0;
+    for(int i = 0; i < c.bytesPerGap.size(); i++) {
+      sum += c.bytesPerGap.get(i);
+    }
+    int average = sum/c.bytesPerGap.size();
+    System.out.println("avg num bytes: " + average);
+    System.out.println("total time: " + c.totalTime);
+    ArrayList<Double> print = new ArrayList<Double>();
   }
 }
