@@ -6,37 +6,41 @@
 */
 
 import java.util.ArrayList;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import javax.sound.sampled.*;
 
 public class Processor {
   /**
-   * Standard sampling rate for audio file.
-   */
+  * Standard sampling rate for audio file.
+  */
   public static final double SAMPLE_RATE = 44100;
   /**
-   * An array of doubles generated prior to walking through the audio file.
-   */
+  * An array of doubles generated prior to walking through the audio file.
+  */
   private double[] originalSamples;
   /**
-   * The total time of reading in a file.
-   */
+  * The total time of reading in a file.
+  */
   private double totalTime;
   /**
-   * An ArrayList of doubles which are potential splittable times.
-   */
+  * An ArrayList of doubles which are potential splittable times.
+  */
   private ArrayList<Double> splits;
   /**
-   * The total number of bytes between each wave of audio data.
-   * Useful for conversion to time data.
-   */
+  * The total number of bytes between each wave of audio data.
+  * Useful for conversion to time data.
+  */
   private ArrayList<Integer> bytesPerGap = new ArrayList<Integer>();
   /**
-   * Times of gaps in the audio sequence.
-   */
+  * Times of gaps in the audio sequence.
+  */
   private ArrayList<Double> times = new ArrayList<Double>();
   /**
-   * Instatniates a new Processor class.
-   * @param String filename the path to the audio file (.wave).
-   */
+  * Instatniates a new Processor class.
+  * @param String filename the path to the audio file (.wave).
+  */
   public Processor(String filename) {
     this.originalSamples = StdAudio.read(filename);
     this.splits = possibleSplits();
@@ -44,10 +48,10 @@ public class Processor {
     this.convertTime();
   }
   /**
-   * Generates double values for which there could be a gap in Processor.
-   * In other words, points where there is no sound being produced.
-   * @return An array of doubles at which the amplitude of the sound wave is zero.
-   */
+  * Generates double values for which there could be a gap in Processor.
+  * In other words, points where there is no sound being produced.
+  * @return An array of doubles at which the amplitude of the sound wave is zero.
+  */
   private ArrayList<Double> possibleSplits() {
     ArrayList<Double> negativeSamples = new ArrayList<Double>();
     ArrayList<Double> positiveSamples = new ArrayList<Double>();
@@ -83,10 +87,23 @@ public class Processor {
   // public ArrayList<Double> likelySplits() {
   //
   // }
+
   /**
-   * Converts the number of doubles between zeroes (`doublesPerGap`) into
-   * times so as to create human-readable "flags."
-   */
+  *
+  *
+  *
+  *
+  *
+  */
+  public void makeWaves(String newFileName) {
+    CapturePlayback cp = new CapturePlayback();
+    cp.saveToFile(newFileName, AudioFileFormat.Type.WAVE);
+
+  }
+  /**
+  * Converts the number of doubles between zeroes (`doublesPerGap`) into
+  * times so as to create human-readable "flags."
+  */
   private void convertTime() {
     double d = 0.0;
 
@@ -96,30 +113,30 @@ public class Processor {
     }
   }
   /**
-   * @return The splits for the audio file.
-   */
+  * @return The splits for the audio file.
+  */
   public ArrayList<Double> getSplits() {
     return splits;
   }
 
   /**
-   * @return The times of silence as calculated by the class.
-   */
+  * @return The times of silence as calculated by the class.
+  */
   public ArrayList<Double> getTimes() {
     return times;
   }
 
   /**
-   * The total time of the file.
-   * @return The length of the file in seconds.
-   */
+  * The total time of the file.
+  * @return The length of the file in seconds.
+  */
   public double getTotalTime() {
     return totalTime;
   }
 
   /**
-   * For testing...
-   */
+  * For testing...
+  */
   public static void main(String[] args) {
     String tempFile = "wavfiles/ComfyConvo.wav";
     Processor c = new Processor(tempFile);
