@@ -1,3 +1,4 @@
+
 /* Note: All inputted wav files
 *        must take the following format:
 *        sample rate of 44100
@@ -9,7 +10,6 @@ import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import javax.sound.sampled.*;
 
 public class Processor {
   /**
@@ -27,7 +27,7 @@ public class Processor {
   /**
   * An ArrayList of doubles which are potential splittable times.
   */
-  private ArrayList<Double> splits;
+  private ArrayList<Double> splits; // just returns a bunch of 0.0 points; ignore
   /**
   * The total number of bytes between each wave of audio data.
   * Useful for conversion to time data.
@@ -38,7 +38,7 @@ public class Processor {
   */
   private ArrayList<Double> times = new ArrayList<Double>();
   /**
-  * Instatniates a new Processor class.
+  * Instantiates a new Processor class.
   * @param String filename the path to the audio file (.wave).
   */
   public Processor(String filename) {
@@ -89,16 +89,20 @@ public class Processor {
   // }
 
   /**
-  *
-  *
-  *
-  *
-  *
+  * The original file is split into many smaller .wav files using the
+  * splitting algorithm above.
   */
   public void makeWaves(String newFileName) {
-    CapturePlayback cp = new CapturePlayback();
-    cp.saveToFile(newFileName, AudioFileFormat.Type.WAVE);
-
+    for(int j = 0; j < originalSamples.length; j++) { // loop through the entire file, byte per byte
+      for(int i = 0; i < splits.size(); i++) { // in total, there should be splits.size() new .wav files created
+        double[] snippet = new double[bytesPerGap.get(i)];
+        for(int f = 0; f < bytesPerGap.get(i); f++) { // program hangs here
+          snippet[f] = originalSamples[j];
+        }
+        System.out.println("it's working");
+        StdAudio.save(newFileName, snippet);
+      }
+    }
   }
   /**
   * Converts the number of doubles between zeroes (`doublesPerGap`) into
@@ -138,15 +142,16 @@ public class Processor {
   * For testing...
   */
   public static void main(String[] args) {
-    String tempFile = "wavfiles/ComfyConvo.wav";
+    String tempFile = "wavfiles/1-welcome.wav";
     Processor c = new Processor(tempFile);
     // System.out.println(c.getTimes());
-    double f = 0;
-    for(int i = 0; i < c.getTimes().size(); i++) {
-      f += c.getTimes().get(i);
-    }
-    f /= 2;
-    System.out.println(f);
-    System.out.println(c.getTotalTime());
+    // double f = 0;
+    // for(int i = 0; i < c.getTimes().size(); i++) {
+    //   f += c.getTimes().get(i);
+    // }
+    // f /= 2;
+    // System.out.println(f);
+    // System.out.println(c.getTotalTime());
+    c.makeWaves(tempFile);
   }
 }
