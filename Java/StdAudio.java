@@ -203,7 +203,7 @@ public final class StdAudio {
     }
     catch (Exception e) {
       System.out.println(e.getMessage());
-      throw new RuntimeException("Could not read " + filename);
+      throw new RuntimeException("Could not read " + filename + ".");
     }
 
     return data;
