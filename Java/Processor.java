@@ -3,6 +3,9 @@
 *        sample rate of 44100
 *        2 channels
 *        audio sample size 16 bit.
+*
+*
+* This file contains all of the .wav reading and splitting algorithms. 
 */
 
 import java.util.ArrayList;
@@ -85,33 +88,6 @@ public class Processor {
 
     return nilSamples;
   }
-
-  /**
-  * Calculates the average value, minimum value, and maximum of a segment of the double array.
-  */
-  public void getInformation(int factor) {
-    double[] arr = new double[originalSamples.length/(factor)];
-    for(int i = 0; i < arr.length; i++) {
-      arr[i] = originalSamples[i];
-    }
-    double sum = 0;
-    double max = 0;
-    double min = 0;
-    for(int f = 0; f < arr.length; f++) {
-      sum += arr[f];
-      if(arr[f] > max) {
-        max = arr[f];
-      }
-      if(arr[f] < min) {
-        min = arr[f];
-      }
-    }
-    double avg = sum/arr.length;
-    System.out.println("avg val: " + avg);
-    System.out.println("max val: " + max);
-    System.out.println("min val: " + min);
-  }
-
   /**
   * Write new .wav files which are the different regions of speech from the inputted file.
   */
@@ -165,7 +141,12 @@ public class Processor {
   public double getTotalTime() {
     return totalTime;
   }
-
+  /**
+  * @return The original double values of the wav file.
+  */
+  public double[] getOriginalSamples() {
+    return originalSamples;
+  }
   /**
   * For testing...
   */
@@ -174,7 +155,6 @@ public class Processor {
     // ArrayList<Processor> arrFP = fp.makeProcessors();
     // Processor c = arrFP.get(0);
     Processor c = new Processor("wavfiles/ComfyConvoCleaned.wav");
-    c.getInformation(1);
 
     // System.out.println(c.getTimes());
     // double f = 0;
