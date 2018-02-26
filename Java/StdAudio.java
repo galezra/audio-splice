@@ -212,7 +212,7 @@ public final class StdAudio {
   /**
   * Save the double array as a sound file named "filenamex"(using .wav or .au format).
   */
-  public static void save(String filename, double[] input) {
+  public static void save(String filename, String dir, double[] input) {
 
     // assumes 44,100 samples per second
     // use 16-bit audio, mono, signed PCM, little Endian
@@ -229,10 +229,10 @@ public final class StdAudio {
       ByteArrayInputStream bais = new ByteArrayInputStream(data);
       AudioInputStream ais = new AudioInputStream(bais, format, input.length);
       if (filename.endsWith(".wav") || filename.endsWith(".WAV")) {
-        AudioSystem.write(ais, AudioFileFormat.Type.WAVE, new File(filename));
+        AudioSystem.write(ais, AudioFileFormat.Type.WAVE, new File(dir, filename));
       }
       else if (filename.endsWith(".au") || filename.endsWith(".AU")) {
-        AudioSystem.write(ais, AudioFileFormat.Type.AU, new File(filename));
+        AudioSystem.write(ais, AudioFileFormat.Type.AU, new File(dir, filename));
       }
       else {
         throw new RuntimeException("File format not supported: " + filename);
