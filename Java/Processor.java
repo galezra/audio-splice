@@ -30,7 +30,7 @@ public class Processor {
   /**
   * An ArrayList of doubles which are potential splittable times.
   */
-  private ArrayList<Double> splits; // just returns a bunch of 0.0 points; ignore
+  private ArrayList<Double> splits; // returns all 0.0 amplitude points; ignore
   /**
   * The total number of bytes between each wave of audio data.
   * Useful for conversion to time data.
@@ -87,34 +87,37 @@ public class Processor {
   }
 
   /**
-  * An optimized version of possibleSplits().
+  * Calculates the average value, minimum value, and maximum of a segment of the double array.
   */
-  // public ArrayList<Double> likelySplits() {
-  //   ArrayList<Double> negativeSamples = new ArrayList<Double>();
-  //   ArrayList<Double> positiveSamples = new ArrayList<Double>();
-  //   ArrayList<Double> nilSamples = new ArrayList<Double>();
-  //   /*
-  //   numDoublesPerGap is set. The below is the algorithm for determining how many
-  //   "samples" there are between zeroes.
-  //   */
-  //   int numDoublesPerGap = 0;
-  //   for (int i = 0; i < originalSamples.length; i++) {
-  //     double val = originalSamples[i];
-  //
-  //     numDoublesPerGap++;
-  //
-  //     if(val > -)
-  //   }
-  //
-  //   return nilSamples;
-  // }
+  public void getInformation(int factor) {
+    double[] arr = new double[originalSamples.length/(factor)];
+    for(int i = 0; i < arr.length; i++) {
+      arr[i] = originalSamples[i];
+    }
+    double sum = 0;
+    double max = 0;
+    double min = 0;
+    for(int f = 0; f < arr.length; f++) {
+      sum += arr[f];
+      if(arr[f] > max) {
+        max = arr[f];
+      }
+      if(arr[f] < min) {
+        min = arr[f];
+      }
+    }
+    double avg = sum/arr.length;
+    System.out.println("avg val: " + avg);
+    System.out.println("max val: " + max);
+    System.out.println("min val: " + min);
+  }
 
   /**
   * Write new .wav files which are the different regions of speech from the inputted file.
   */
   public void makeWaves(String pathToFile) {
     String dir = pathToFile.substring(0, pathToFile.indexOf(".wav"));
-    Writer.makeFolder(dir);
+    Writer.makeFolder(dir); // instantiate a new directory named the wavFile
 
     String flName = pathToFile.substring(pathToFile.lastIndexOf("/") + 1);
 
@@ -171,6 +174,7 @@ public class Processor {
     // ArrayList<Processor> arrFP = fp.makeProcessors();
     // Processor c = arrFP.get(0);
     Processor c = new Processor("wavfiles/ComfyConvoCleaned.wav");
+    c.getInformation(1);
 
     // System.out.println(c.getTimes());
     // double f = 0;
@@ -181,7 +185,7 @@ public class Processor {
     // System.out.println(f);
     // System.out.println(c.getTotalTime());
 
-    c.makeWaves("wavfiles/ComfyConvoCleaned.wav");
+    // c.makeWaves("wavfiles/ComfyConvoCleaned.wav");
     // System.out.println(c.bytesPerGap);
     // int sum = 0;
     // for(int i = 0; i < c.bytesPerGap.size(); i++) {
