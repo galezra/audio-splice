@@ -88,23 +88,8 @@ public class Processor {
 
     return nilSamples;
   }
-  /**
-  * Write new .wav files which are the different regions of speech from the inputted file.
-  */
-  public void makeWaves(String pathToFile) {
-    String flName = pathToFile.substring(pathToFile.lastIndexOf("/") + 1);
+  
 
-    for(int j = 0; j < originalSamples.length; j++) { // loop through the entire file, byte per byte
-      for(int i = 0; i < splits.size(); i++) { // in total, there should be splits.size() new .wav files created
-        double[] snippet = new double[bytesPerGap.get(i)];
-        for(int f = 0; f < bytesPerGap.get(i); f++) {
-          snippet[j] = originalSamples[j];
-        }
-        String newWaveFile = pathToFile + " " + i;
-        StdAudio.save(newWaveFile + ".wav", snippet);
-      }
-    }
-  }
   /**
   * Converts the number of doubles between zeroes (`doublesPerGap`) into
   * times so as to create human-readable "flags."
@@ -145,6 +130,12 @@ public class Processor {
     return originalSamples;
   }
   /**
+  * @return The number of bytes between different speakers.
+  */
+  public ArrayList<Integer> getBytesPerGap() {
+    return bytesPerGap;
+  }
+  /**
   * For testing...
   */
   public static void main(String[] args) {
@@ -152,6 +143,7 @@ public class Processor {
     // ArrayList<Processor> arrFP = fp.makeProcessors();
     // Processor c = arrFP.get(0);
     Processor c = new Processor("wavfiles/ComfyConvoCleaned.wav");
+    Writer w = new Writer(c.fileName);
 
     // System.out.println(c.getTimes());
     // double f = 0;
@@ -162,7 +154,7 @@ public class Processor {
     // System.out.println(f);
     // System.out.println(c.getTotalTime());
 
-    c.makeWaves("wavfiles/ComfyConvoCleaned.wav");
+    w.makeWaves("wavfiles/ComfyConvoCleaned.wav");
     // System.out.println(c.bytesPerGap);
     // int sum = 0;
     // for(int i = 0; i < c.bytesPerGap.size(); i++) {
