@@ -59,4 +59,16 @@ public class ChunkedUpWav {
       moveThrough += arrSizes;
     }
   }
+  public double[][] getChunks() {
+    return chunks;
+  }
+  public double getAvg() {
+    return average;
+  }
+  public double getMinimum() {
+    return minimum;
+  }
+  public double getMaxmimum() {
+    return maximum;
+  }
 }

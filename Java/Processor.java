@@ -88,8 +88,60 @@ public class Processor {
 
     return nilSamples;
   }
-  
+  // REVAMPING ALGORITHM
+  // private ArrayList<Double> probableSplits(int numSpeechSwitches) { // this should output only ten
+  //
+  //
+  // }
+  // finding quiet space
+  private ArrayList<ArrayList<Double>> findPauses(double[] segment) {
+    ArrayList<ArrayList<Double>> arrOfSilences = new ArrayList<ArrayList<Double>>();
+    double standardDeviation = Processor.calculateSD(segment);
+    int sum = 0;
+    ArrayList<Double> silence = new ArrayList<Double>();
+    for(int f = 0; f < segment.length; f++) {
+      sum += f;
+    }
+    double avg = sum/segment.length;
+    for(int i = 0; i < segment.length; i++) {
+      if(Math.abs(2 * standardDeviation) > segment[i]) {
+        silence.add(segment[i]);
+      }
+      else {
+        if(silence.size() > 22050) {
+          arrOfSilences.add(silence);
+        }
+      }
+    }
+    System.out.println(arrOfSilences);
+    return arrOfSilences;
+  }
+  // standard deviation calculator for regular arr
+  public static double calculateSD(double[] arr) {
+    double sum = 0.0, standardDeviation = 0.0;
 
+    for(double num : arr) {
+      sum += num;
+    }
+    double average = sum/arr.length;
+    for(double num : arr) {
+      standardDeviation += Math.pow(num - average, 2);
+    }
+    return Math.sqrt(standardDeviation/arr.length);
+  }
+  // standard deviation calculator for ArrayList
+  public static double calculateSD(ArrayList<Double> arrList) {
+    double sum = 0.0, standardDeviation = 0.0;
+
+    for(Double num : arrList) {
+      sum += num;
+    }
+    double average = sum/arrList.size();
+    for(Double num : arrList) {
+      standardDeviation += Math.pow(num - average, 2);
+    }
+    return Math.sqrt(standardDeviation/arrList.size());
+  }
   /**
   * Converts the number of doubles between zeroes (`doublesPerGap`) into
   * times so as to create human-readable "flags."
@@ -115,7 +167,6 @@ public class Processor {
   public ArrayList<Double> getTimes() {
     return times;
   }
-
   /**
   * The total time of the file.
   * @return The length of the file in seconds.
@@ -144,17 +195,8 @@ public class Processor {
     // Processor c = arrFP.get(0);
     Processor c = new Processor("wavfiles/ComfyConvoCleaned.wav");
     Writer w = new Writer(c.fileName);
-
-    // System.out.println(c.getTimes());
-    // double f = 0;
-    // for(int i = 0; i < c.getTimes().size(); i++) {
-    //   f += c.getTimes().get(i);
-    // }
-    // f /= 2;
-    // System.out.println(f);
-    // System.out.println(c.getTotalTime());
-
-    w.makeWaves("wavfiles/ComfyConvoCleaned.wav");
+    c.findPauses();
+    // w.makeWaves("wavfiles/ComfyConvoCleaned.wav");
     // System.out.println(c.bytesPerGap);
     // int sum = 0;
     // for(int i = 0; i < c.bytesPerGap.size(); i++) {
