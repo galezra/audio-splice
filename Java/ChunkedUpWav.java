@@ -1,12 +1,20 @@
-public class ChunkOfWave {
+/**
+* Splits a .wav file apart into "numNewWaves" new, smaller
+* wav files. Stores the following information about each of these new arrays:
+* - maximum value
+* - minimum value
+* - average value
+*/
+public class ChunkedUpWav {
   private double maximum = 0;
   private double minimum = 0;
   private double average = 0;
 
   private Processor wholeWave;
 
-  public ChunkOfWave(String fileName) {
+  public ChunkedUpWav(String fileName, int numNewWaves) {
     wholeWave = new Processor(fileName);
+    wholeWave.getInformation(numNewWaves);
   }
   /**
   * Calculates the average value, minimum value, and maximum of a segment of the double array.
