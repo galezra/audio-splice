@@ -5,7 +5,7 @@
 *        audio sample size 16 bit.
 *
 *
-* This file contains all of the .wav reading and splitting algorithms. 
+* This file contains all of the .wav reading and splitting algorithms.
 */
 
 import java.util.ArrayList;
@@ -92,9 +92,6 @@ public class Processor {
   * Write new .wav files which are the different regions of speech from the inputted file.
   */
   public void makeWaves(String pathToFile) {
-    String dir = pathToFile.substring(0, pathToFile.indexOf(".wav"));
-    Writer.makeFolder(dir); // instantiate a new directory named the wavFile
-
     String flName = pathToFile.substring(pathToFile.lastIndexOf("/") + 1);
 
     for(int j = 0; j < originalSamples.length; j++) { // loop through the entire file, byte per byte
@@ -104,7 +101,7 @@ public class Processor {
           snippet[j] = originalSamples[j];
         }
         String newWaveFile = pathToFile + " " + i;
-        StdAudio.save(newWaveFile + ".wav", dir, snippet);
+        StdAudio.save(newWaveFile + ".wav", snippet);
       }
     }
   }
@@ -165,7 +162,7 @@ public class Processor {
     // System.out.println(f);
     // System.out.println(c.getTotalTime());
 
-    // c.makeWaves("wavfiles/ComfyConvoCleaned.wav");
+    c.makeWaves("wavfiles/ComfyConvoCleaned.wav");
     // System.out.println(c.bytesPerGap);
     // int sum = 0;
     // for(int i = 0; i < c.bytesPerGap.size(); i++) {
