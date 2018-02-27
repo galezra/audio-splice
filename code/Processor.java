@@ -121,7 +121,6 @@ public class Processor {
         indicesOfSilence.add(indOfSilence);
       }
     }
-    System.out.println(indicesOfSilence);
   }
   return indicesOfSilence;
 }
@@ -129,7 +128,7 @@ public class Processor {
 * New cutter method. Incomplete. By finding where each silence begins and ends,
 * the idea was to create new arrays where there WAS sound. Those would be the arrays
 * for which StdAudio's save method would create new files, effectly clipping out the "voiced"
-* parts of the file. 
+* parts of the file.
 */
   // public double[] cutApart(ArrayList<Double> clipToCut) {
   //   ArrayList<ArrayList<Integer>> indicesOfSilence = this.findPauses(clipToCut);
