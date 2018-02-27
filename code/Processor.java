@@ -117,23 +117,26 @@ public class Processor {
         indOfSilence.add(i);
       }
       else { // when segment.get(i) is no longer "silence"
-        if(silence.size() > 3000) { // where 1000/41000 = the amount of time that the silence lasts for. In this case, so long as silence > 1000, it counts as a "legitimate" silence.
+        if(silence.size() > 6000) { // where 1000/41000 = the amount of time that the silence lasts for. In this case, so long as silence > 1000, it counts as a "legitimate" silence.
         indicesOfSilence.add(indOfSilence);
-        indOfSilence.clear();
       }
     }
+    System.out.println(indicesOfSilence);
   }
-  // System.out.println(indicesOfSilence);
   return indicesOfSilence;
 }
 /**
-* New cutter method. Let's see how this goes.
+* New cutter method. Incomplete. By finding where each silence begins and ends,
+* the idea was to create new arrays where there WAS sound. Those would be the arrays
+* for which StdAudio's save method would create new files, effectly clipping out the "voiced"
+* parts of the file. 
 */
   // public double[] cutApart(ArrayList<Double> clipToCut) {
   //   ArrayList<ArrayList<Integer>> indicesOfSilence = this.findPauses(clipToCut);
   //   ArrayList<Integer> oneSilence = new ArrayList<Integer>();
   //   for(int i = 0; i < indicesOfSilence.size(); i++) {
   //     oneSilence = indicesOfSilence.get(i);
+  //
   //   }
   // }
   /**
@@ -184,10 +187,10 @@ public class Processor {
   * For testing...
   */
   public static void main(String[] args) {
-    Processor c = new Processor("wavfiles/CheynCleaned.wav");
+    Processor c = new Processor("wavfiles/JamesNeroCleaned.wav");
 
-    ChunkedUpWav cuw = new ChunkedUpWav(c.fileName, 90);
+    ChunkedUpWav cuw = new ChunkedUpWav(c.fileName, 30);
     ArrayList<ArrayList<Double>> c2 = cuw.getChunks2();
-    c.findPauses(c2.get(56));
+    c.findPauses(c2.get(6));
   }
 }
