@@ -213,7 +213,7 @@ public class Processor {
   * For testing...
   */
   public static void main(String[] args) {
-    Processor c = new Processor("wavfiles/ComfyConvoCleaned.wav");
+    Processor c = new Processor("wavfiles/CheynCleaned.wav");
 
     ChunkedUpWav cuw = new ChunkedUpWav(c.fileName, 30);
     ArrayList<ArrayList<Double>> c2 = cuw.getChunks2();
