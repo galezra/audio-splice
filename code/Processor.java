@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.*;
 
 public class Processor {
   /**
@@ -93,78 +94,48 @@ public class Processor {
   //
   //
   // }
-  // finding quiet space
-  private ArrayList<ArrayList<Double>> findPauses(double[] segment) {
-    ArrayList<ArrayList<Double>> arrOfSilences = new ArrayList<ArrayList<Double>>();
-    double standardDeviation = Processor.calculateSD(segment);
+
+  /**
+  * Breaks "segment" apart and finds the sections of the file in which
+  * the values of the sound wave are less than the median value.
+  * These sections are then deemeed "silence". The two dimensional ArrayList
+  * returned is an array containing THE INDEXES of all of these silences.
+  */
+  private ArrayList<ArrayList<Integer>> findPauses(ArrayList<Double> segment) {
+    ArrayList<ArrayList<Integer>> indicesOfSilence = new ArrayList<ArrayList<Integer>>();
+
+    double median = ChunkedUpWav.calculateMedian(segment);
+    System.out.println("Median: " + median);
     int sum = 0;
+
     ArrayList<Double> silence = new ArrayList<Double>();
-    for(int f = 0; f < segment.length; f++) {
-      sum += f;
-    }
-    double avg = sum/segment.length;
-    for(int i = 0; i < segment.length; i++) {
-      if(Math.abs(2 * standardDeviation) > segment[i]) {
-        silence.add(segment[i]);
-      }
-      else {
-        if(silence.size() > 22050) {
-          arrOfSilences.add(silence);
-        }
-      }
-    }
-    System.out.println(arrOfSilences);
-    return arrOfSilences;
-  }
-  // finding quiet space adapted for ArrayList<Double> parameter
-  private ArrayList<ArrayList<Double>> findPauses(ArrayList<Double> segment) {
-    ArrayList<ArrayList<Double>> arrOfSilences = new ArrayList<ArrayList<Double>>();
-    double standardDeviation = Processor.calculateSD(segment);
-    int sum = 0;
-    ArrayList<Double> silence = new ArrayList<Double>();
-    for(int f = 0; f < segment.size(); f++) {
-      sum += f;
-    }
-    double avg = sum/segment.size();
+    ArrayList<Integer> indOfSilence = new ArrayList<Integer>();
+
     for(int i = 0; i < segment.size(); i++) {
-      if(Math.abs(2 * standardDeviation) > segment.get(i)) {
+      if(segment.get(i) < median) {
         silence.add(segment.get(i));
+        indOfSilence.add(i);
       }
-      else {
-        if(silence.size() > 11025) {
-          arrOfSilences.add(silence);
-        }
+      else { // when segment.get(i) is no longer "silence"
+        if(silence.size() > 3000) { // where 1000/41000 = the amount of time that the silence lasts for. In this case, so long as silence > 1000, it counts as a "legitimate" silence.
+        indicesOfSilence.add(indOfSilence);
+        indOfSilence.clear();
       }
     }
-    System.out.println(arrOfSilences);
-    return arrOfSilences;
   }
-  // standard deviation calculator for regular arr
-  public static double calculateSD(double[] arr) {
-    double sum = 0.0, standardDeviation = 0.0;
-
-    for(double num : arr) {
-      sum += num;
-    }
-    double average = sum/arr.length;
-    for(double num : arr) {
-      standardDeviation += Math.pow(num - average, 2);
-    }
-    return Math.sqrt(standardDeviation/arr.length);
-  }
-  // standard deviation calculator for ArrayList
-  public static double calculateSD(ArrayList<Double> arrList) {
-    double sum = 0.0, standardDeviation = 0.0;
-
-    for(Double num : arrList) {
-      sum += num;
-    }
-    double average = sum/arrList.size();
-    for(Double num : arrList) {
-      standardDeviation += Math.pow(num - average, 2);
-    }
-    return Math.sqrt(standardDeviation/arrList.size());
-  }
+  // System.out.println(indicesOfSilence);
+  return indicesOfSilence;
+}
+/**
+* New cutter method. Let's see how this goes.
+*/
+  // public double[] cutApart(ArrayList<Double> clipToCut) {
+  //   ArrayList<ArrayList<Integer>> indicesOfSilence = this.findPauses(clipToCut);
+  //   ArrayList<Integer> oneSilence = new ArrayList<Integer>();
+  //   for(int i = 0; i < indicesOfSilence.size(); i++) {
+  //     oneSilence = indicesOfSilence.get(i);
+  //   }
+  // }
   /**
   * Converts the number of doubles between zeroes (`doublesPerGap`) into
   * times so as to create human-readable "flags."
@@ -215,8 +186,8 @@ public class Processor {
   public static void main(String[] args) {
     Processor c = new Processor("wavfiles/CheynCleaned.wav");
 
-    ChunkedUpWav cuw = new ChunkedUpWav(c.fileName, 30);
+    ChunkedUpWav cuw = new ChunkedUpWav(c.fileName, 90);
     ArrayList<ArrayList<Double>> c2 = cuw.getChunks2();
-    c.findPauses(c2.get(0));
+    c.findPauses(c2.get(56));
   }
 }
