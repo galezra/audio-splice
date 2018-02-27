@@ -131,7 +131,7 @@ public class Processor {
         silence.add(segment.get(i));
       }
       else {
-        if(silence.size() > 22050) {
+        if(silence.size() > 11025) {
           arrOfSilences.add(silence);
         }
       }
@@ -215,7 +215,7 @@ public class Processor {
   public static void main(String[] args) {
     Processor c = new Processor("wavfiles/ComfyConvoCleaned.wav");
 
-    ChunkedUpWav cuw = new ChunkedUpWav(c.fileName, 20);
+    ChunkedUpWav cuw = new ChunkedUpWav(c.fileName, 30);
     ArrayList<ArrayList<Double>> c2 = cuw.getChunks2();
     c.findPauses(c2.get(0));
   }
