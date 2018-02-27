@@ -229,10 +229,10 @@ public final class StdAudio {
     ByteArrayInputStream bais = new ByteArrayInputStream(data);
     AudioInputStream ais = new AudioInputStream(bais, format, input.length);
     if (filename.endsWith(".wav") || filename.endsWith(".WAV")) {
-      AudioSystem.write(ais, AudioFileFormat.Type.WAVE, new File(filename));
+      AudioSystem.write(ais, AudioFileFormat.Type.WAVE, new File("/wavFiles/{}".format(filename)).mkdirs());
     }
     else if (filename.endsWith(".au") || filename.endsWith(".AU")) {
-      AudioSystem.write(ais, AudioFileFormat.Type.AU, new File(filename));
+      AudioSystem.write(ais, AudioFileFormat.Type.AU, new File("/auFiles/{}".format(filename)).mkdirs());
     }
     else {
       throw new RuntimeException("File format not supported: " + filename);
